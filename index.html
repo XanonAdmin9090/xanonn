@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Admin Panel</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="script.js"></script>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="login-container">
+        <div class="login-box">
+            <h1>Admin Login</h1>
+            <form id="login-form">
+                <input type="text" id="username" placeholder="Username" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+            <p id="error-message">Invalid credentials. Try again.</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content">
+        <!-- Logout Button -->
+        <button id="logout-btn" class="logout-btn">Logout</button>
+
+        <header>Welcome to Xanon Portal &#57628;</header>
+        <nav>
+            <button class="nav-btn" data-target="tasks">Tasks</button>
+            <button class="nav-btn" data-target="tutorials">Tutorials</button>
+        </nav>
+
+        <section id="tasks">
+            <h2>Tasks</h2>
+            <form id="task-form">
+                <input type="text" id="task-name" placeholder="Task Name" required>
+                <input type="datetime-local" id="task-date" required>
+                <button type="submit" class="save-btn">Save Task</button>
+            </form>
+            <div id="task-list"></div>
+        </section>
+
+        <section id="tutorials">
+            <h2>Tutorials</h2>
+            <p>List your tutorials here...</p>
+        </section>
+    </div>
+</body>
+</html>
