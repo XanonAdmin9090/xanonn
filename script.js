@@ -1,3 +1,16 @@
+// Your Firebase configuration object (replace with your Firebase credentials)
+const firebaseConfig = {
+    apiKey: "AIzaSyAY_fQ8WeVtBwA7orhfs75W6HP_V_IFczI",
+    authDomain: "auth-76681.firebaseapp.com",
+    projectId: "auth-76681",
+    storageBucket: "auth-76681.firebasestorage.app",
+    messagingSenderId: "306642804365",
+    appId: "1:306642804365:web:7a87601f30792cb58bccc4"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
 // Check if the user is already logged in
 window.addEventListener('DOMContentLoaded', function () {
     if (localStorage.getItem('isLoggedIn') === 'true') {
@@ -7,25 +20,31 @@ window.addEventListener('DOMContentLoaded', function () {
 });
 
 // Login Functionality
-document.getElementById('login-form').addEventListener('submit', function (e) {
+document.getElementById('login-form').addEventListener('submit', async (e) => {
     e.preventDefault();
-    const username = document.getElementById('username').value;
+    const email = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
-    if (username === 'admin' && password === 'admin') {
-        localStorage.setItem('isLoggedIn', 'true'); // Store login state
+    try {
+        const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
+        localStorage.setItem('isLoggedIn', 'true');
         document.getElementById('login-container').style.display = 'none';
         document.getElementById('main-content').style.display = 'block';
-    } else {
-        alert('Invalid credentials!');
+    } catch (error) {
+        document.getElementById('error-message').textContent = `Login failed: ${error.message}`;
+        document.getElementById('error-message').style.display = 'block';  // Show the error message
     }
 });
 
 // Logout Functionality
 document.getElementById('logout-btn').addEventListener('click', function () {
-    localStorage.removeItem('isLoggedIn'); // Clear login state
-    document.getElementById('login-container').style.display = 'flex';
-    document.getElementById('main-content').style.display = 'none';
+    firebase.auth().signOut().then(() => {
+        localStorage.removeItem('isLoggedIn');
+        document.getElementById('login-container').style.display = 'flex';
+        document.getElementById('main-content').style.display = 'none';
+    }).catch((error) => {
+        console.error('Logout error: ', error.message);
+    });
 });
 
 // Navigation to sections
@@ -77,7 +96,6 @@ taskForm.addEventListener('submit', function(e) {
     });
 
     taskItem.querySelector('.delete-btn').addEventListener('click', () => {
-        // Move task to deleted tasks list
         taskItem.style.display = 'none'; // Hide task from task list
         const deletedTask = taskItem.cloneNode(true);
         deletedTask.querySelector('.delete-btn').style.display = 'none'; // Hide delete button
